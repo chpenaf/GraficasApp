@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-grafica-barra',
@@ -7,10 +10,29 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class GraficaBarraComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+  @Input() horizontal: boolean = false;
+  @Input() barChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: []
+  }
 
-  constructor() { }
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+  };
+
+  public barChartType: ChartType = 'bar';
+  
+  constructor() {}
 
   ngOnInit(): void {
+
+
+    if( this.horizontal ) {
+      this.barChartOptions!.indexAxis = 'y';
+      this.barChartOptions!.scales!["y"]!.min! = 0;
+    }
+
   }
 
 }
